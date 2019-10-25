@@ -7,6 +7,11 @@ import fbLogo from '../../img/fb-logo.png';
 import googleLogo from '../../img/google-logo.png';
 
 import { Form, Input, Button, Icon, notification } from 'antd';
+import {
+    FacebookLoginButton,
+    GoogleLoginButton
+  } from "react-social-login-buttons";
+
 const FormItem = Form.Item;
 
 class Login extends Component {
@@ -26,6 +31,9 @@ class Login extends Component {
                 <div className="login-content">
                     <h1 className="login-title">Login</h1>
                     <SocialLogin />
+                    <div className="or-separator">
+                        <span className="or-text">OR</span>
+                    </div>
                     <AntWrappedLoginForm onLogin={this.props.onLogin} />
                 </div>
             </div>
@@ -105,10 +113,10 @@ class SocialLogin extends Component {
     render() {
         return (
             <div className="social-login">
-                <a className="btn btn-block social-btn google" href={GOOGLE_AUTH_URL}>
-                    <img src={googleLogo} alt="Google" /> Log in with Google</a>
-                <a className="btn btn-block social-btn facebook" href={FACEBOOK_AUTH_URL}>
-                    <img src={fbLogo} alt="Facebook" /> Log in with Facebook</a>
+                <a href={GOOGLE_AUTH_URL}>
+                <GoogleLoginButton /> </a>
+                <a href={FACEBOOK_AUTH_URL}>
+                <FacebookLoginButton /></a>
             </div>
         );
     }
