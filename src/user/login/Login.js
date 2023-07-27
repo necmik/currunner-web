@@ -3,8 +3,6 @@ import { login } from '../../util/APIUtils';
 import './Login.css';
 import { Link, Redirect  } from 'react-router-dom';
 import { GOOGLE_AUTH_URL, FACEBOOK_AUTH_URL, ACCESS_TOKEN } from '../../constants';
-import fbLogo from '../../img/fb-logo.png';
-import googleLogo from '../../img/google-logo.png';
 
 import { Form, Input, Button, Icon, notification } from 'antd';
 import {
@@ -70,7 +68,7 @@ class LoginForm extends Component {
                 const loginRequest = Object.assign({}, values);
                 login(loginRequest)
                 .then(response => {
-                    localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+                    localStorage.setItem(ACCESS_TOKEN, response);
                     this.props.onLogin();
                 }).catch(error => {
                     if(error.status === 401) {
