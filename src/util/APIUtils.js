@@ -14,11 +14,11 @@ const request = (options) => {
 
     return fetch(options.url, options)
     .then(response => 
-        response.text().then(text => {
+        response.json().then(json => {
             if(!response.ok) {
-                return Promise.reject(text);
+                return Promise.reject(json);
             }
-            return text;
+            return json;
         })
     );
 };
@@ -38,14 +38,6 @@ export function signup(signupRequest) {
         body: JSON.stringify(signupRequest)
     });
 }
-
-export function checkEmailAvailability(email) {
-    return request({
-        url: API_BASE_URL + "users/checkEmailAvailability?email=" + email,
-        method: 'GET'
-    });
-}
-
 
 export function getCurrentUser() {
     if(!localStorage.getItem(ACCESS_TOKEN)) {

@@ -48,7 +48,7 @@
     font-weight: 600;
     color: rgba(0,0,0,0.85);
     text-overflow: ellipsis;
-    overflow: hidden;
+    /* overflow: hidden; */
     white-space: nowrap;
 }
 
