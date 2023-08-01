@@ -1,17 +1,18 @@
 const {
     override,
-    fixBabelImports,
-    addLessLoader,
   } = require("customize-cra");
 
+const addLessLoader = require("customize-cra-less-loader");  
+
 module.exports = override(
-    fixBabelImports("import", {
-      libraryName: "antd", style: true // change importing css to less
-    }),
     addLessLoader({
-      javascriptEnabled: true,
-      modifyVars: { "@layout-body-background": "#FFFFFF",
-      "@layout-header-background": "#FFFFFF",
-      "@layout-footer-background": "#FFFFFF" }
+      lessLoaderOptions: {
+        lessOptions: {
+          javascriptEnabled: true,
+          modifyVars: { "@layout-body-background": "#FFFFFF",
+          "@layout-header-background": "#FFFFFF",
+          "@layout-footer-background": "#FFFFFF" },
+        }
+      }
     })
   );

@@ -5,7 +5,7 @@ const request = (options) => {
         'Content-Type': 'application/json',
     })
     
-    if(localStorage.getItem(ACCESS_TOKEN) && localStorage.getItem(ACCESS_TOKEN) != 'undefined') {
+    if(localStorage.getItem(ACCESS_TOKEN) && localStorage.getItem(ACCESS_TOKEN) !== 'undefined') {
         headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
     }
 

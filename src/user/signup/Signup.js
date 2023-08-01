@@ -96,7 +96,7 @@ class Signup extends Component {
             <div className="signup-container">
                 <h1 className="page-title">Sign Up</h1>
                 <div className="signup-content">
-                    <Form onSubmit={this.handleSubmit} className="signup-form">
+                    <Form onSubmit={this.handleSubmit} className="signup-form" labelAlign="right">
                         <FormItem 
                             label="First Name"
                             validateStatus={this.state.firstName.validateStatus}

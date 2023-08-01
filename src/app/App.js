@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Route, withRouter, Switch
-} from 'react-router-dom';
+import {Routes, Route, useNavigate} from 'react-router-dom';
 
 import { getCurrentUser } from '../util/APIUtils';
 import { ACCESS_TOKEN } from '../constants';
@@ -20,7 +19,19 @@ import OAuth2RedirectHandler from '../user/oauth2/OAuth2RedirectHandler';
 
 const { Content } = Layout;
 
+export const withRouter = (Component) => {
+  const Wrapper = (props) => {
+    const navigate = useNavigate();
+
+    return <Component navigate={navigate} {...props} />;
+  };
+
+  return Wrapper;
+};
+
 class App extends Component {
+  // navigate = useNavigate();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -100,19 +111,16 @@ class App extends Component {
 
           <Content className="app-content">
             <div className="container">
-              <Switch>     
-                <Route exact path="/" 
-                    component={EmptyPage}>
-                </Route> 
-                <Route path="/login" 
-                    render={(props) => <Login onLogin={this.handleLogin} {...props} />}></Route>
-                <Route path="/signup" component={Signup}></Route>
-                <Route path="/users/:email" 
-                    render={(props) => <Profile isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...props}  />}>
+              <Routes>     
+                <Route path="/" element={<EmptyPage/>} /> 
+                <Route path="/login" element={<Login onLogin={this.handleLogin} />} />
+                <Route path="/signup" element={<Signup/>}></Route>
+                <Route path="/users/:email"  
+                  render={(props) => <Profile isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...props}  />}>
                 </Route>
-                <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}></Route>
-                <Route component={NotFound}></Route>
-              </Switch>
+                <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler/>} />
+                <Route element={NotFound} />
+              </Routes>
             </div>
           </Content>
         </Layout>

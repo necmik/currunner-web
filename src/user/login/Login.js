@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { login } from '../../util/APIUtils';
 import './Login.css';
-import { Link, Redirect  } from 'react-router-dom';
+import { Link, Navigate  } from 'react-router-dom';
 import { GOOGLE_AUTH_URL, FACEBOOK_AUTH_URL, ACCESS_TOKEN } from '../../constants';
 
-import { Form, Input, Button, Icon, notification } from 'antd';
+import { Form, Input, Button, notification } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { withRouterHOC } from '../../common/WithRouterHOC'
+
 import {
     FacebookLoginButton,
     GoogleLoginButton
@@ -17,13 +20,13 @@ class Login extends Component {
     componentDidMount() {
         // If the OAuth2 login encounters an error, the user is redirected to the /login page with an error
         // Here we display the error and then remove the error query parameter from the location.
-        if(this.props.location.state && this.props.location.state.error) {
+        if(this.props.router.location.state && this.props.location.state.error) {
             setTimeout(() => {
-                notification.error(this.props.location.state.error, {
+                notification.error(this.props.location.router.state.error, {
                     timeout: 5000
                 });
                 this.props.history.replace({
-                    pathname: this.props.location.pathname,
+                    pathname: this.props.routerlocation.pathname,
                     state: {}
                 });
             }, 100);
@@ -32,14 +35,13 @@ class Login extends Component {
 
     render() {
         if(this.props.isAuthenticated) {
-            return <Redirect
+            return <Navigate
                 to={{
                 pathname: "/",
-                state: { from: this.props.location }
+                state: { from: this.props.router.location }
             }}/>;            
         }
 
-        const AntWrappedLoginForm = Form.create()(LoginForm)
         return (
             <div className="login-container">               
                 <div className="login-content">
@@ -48,14 +50,14 @@ class Login extends Component {
                     <div className="or-separator">
                         <span className="or-text">OR</span>
                     </div>
-                    <AntWrappedLoginForm onLogin={this.props.onLogin} />
+                    <LoginForm onLogin={this.props.onLogin} />
                 </div>
             </div>
         );
     }
 }
 
-class LoginForm extends Component {
+class LoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -88,31 +90,22 @@ class LoginForm extends Component {
     }
 
     render() {
-        const { getFieldDecorator } = this.props.form;
         return (
             <Form onSubmit={this.handleSubmit} className="login-form">
-                <FormItem>
-                    {getFieldDecorator('email', {
-                        rules: [{ required: true, message: 'Please input your email!' }],
-                    })(
+                <FormItem name='email' rules={[{ required: true, message: 'Please input your email!' }]}>
                     <Input 
-                        prefix={<Icon type="user" />}
+                        prefix={<UserOutlined />}
                         size="large"
                         name="email" 
                         placeholder="Email" />    
-                    )}
                 </FormItem>
-                <FormItem>
-                {getFieldDecorator('password', {
-                    rules: [{ required: true, message: 'Please input your Password!' }],
-                })(
+                <FormItem name='password' rules={[{ required: true, message: 'Please input your Password!' }]}>
                     <Input 
-                        prefix={<Icon type="lock" />}
+                        prefix={<LockOutlined />}
                         size="large"
                         name="password" 
                         type="password" 
                         placeholder="Password"  />                        
-                )}
                 </FormItem>
                 <FormItem>
                     <Button type="primary" htmlType="submit" size="large" className="login-form-button">Login</Button>
@@ -138,4 +131,4 @@ class SocialLogin extends Component {
 
 
 
-export default Login;
+export default withRouterHOC(Login);

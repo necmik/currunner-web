@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import {
-    Link,
-    withRouter
+    Link
 } from 'react-router-dom';
+import { Layout, Menu, Dropdown } from 'antd';
+import { HomeOutlined, UserOutlined, DownOutlined } from '@ant-design/icons';
 import './AppHeader.css';
-import { Layout, Menu, Dropdown, Icon } from 'antd';
+import { withRouterHOC } from './WithRouterHOC'
+
 const Header = Layout.Header;
-    
+
 class AppHeader extends Component {
     constructor(props) {
         super(props);   
@@ -25,10 +27,10 @@ class AppHeader extends Component {
           menuItems = [
             <Menu.Item key="/">
               <Link to="/">
-                <Icon type="home" className="nav-icon" />
+                <HomeOutlined className="nav-icon" />
               </Link>
             </Menu.Item>,
-          <Menu.Item key="/profile" className="profile-menu">
+            <Menu.Item key="/profile" className="profile-menu">
                 <ProfileDropdownMenu 
                   currentUser={this.props.currentUser} 
                   handleMenuClick={this.handleMenuClick}/>
@@ -54,7 +56,7 @@ class AppHeader extends Component {
               <Menu
                 className="app-menu"
                 mode="horizontal"
-                selectedKeys={[this.props.location.pathname]}
+                selectedKeys={[this.props.router.location.pathname]}
                 style={{ lineHeight: '64px' }} >
                   {menuItems}
               </Menu>
@@ -91,11 +93,11 @@ function ProfileDropdownMenu(props) {
       trigger={['click']}
       getPopupContainer = { () => document.getElementsByClassName('profile-menu')[0]}>
       <a className="ant-dropdown-link">
-         <Icon type="user" className="nav-icon" style={{marginRight: 0}} /> <Icon type="down" />
+         <UserOutlined className="nav-icon" style={{marginRight: 0}} /> <DownOutlined />
       </a>
     </Dropdown>
   );
 }
 
 
-export default withRouter(AppHeader);
+export default withRouterHOC(AppHeader);
