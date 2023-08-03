@@ -4,7 +4,6 @@ import './Signup.css';
 import { Link } from 'react-router-dom';
 import { 
     NAME_MIN_LENGTH, NAME_MAX_LENGTH, 
-    EMAIL_MAX_LENGTH,
     PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH
 } from '../../constants';
 
@@ -33,7 +32,6 @@ class Signup extends Component {
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.validateEmailAvailability = this.validateEmailAvailability.bind(this);
         this.isFormInvalid = this.isFormInvalid.bind(this);
         this.validateConfirmedPassword = this.validateConfirmedPassword.bind(this);
     }
@@ -51,9 +49,7 @@ class Signup extends Component {
         });
     }    
 
-    handleSubmit(event) {
-        event.preventDefault();
-    
+    handleSubmit = (values) => {
         const signupRequest = {
             firstName: this.state.firstName.value,
             lastName: this.state.lastName.value,
@@ -96,8 +92,9 @@ class Signup extends Component {
             <div className="signup-container">
                 <h1 className="page-title">Sign Up</h1>
                 <div className="signup-content">
-                    <Form onSubmit={this.handleSubmit} className="signup-form" labelAlign="right">
+                    <Form onFinish={this.handleSubmit} className="signup-form" labelAlign="right">
                         <FormItem 
+                            name='firstName'
                             label="First Name"
                             validateStatus={this.state.firstName.validateStatus}
                             help={this.state.firstName.errorMsg}>
@@ -110,6 +107,7 @@ class Signup extends Component {
                                 onChange={(event) => this.handleInputChange(event, this.validateName)} />    
                         </FormItem>
                         <FormItem 
+                            name='lastName'
                             label="Last Name"
                             validateStatus={this.state.lastName.validateStatus}
                             help={this.state.lastName.errorMsg}>
@@ -122,9 +120,11 @@ class Signup extends Component {
                                 onChange={(event) => this.handleInputChange(event, this.validateName)} />    
                         </FormItem>
                         <FormItem 
+                            name='email'
                             label="Email"
                             hasFeedback
                             validateStatus={this.state.email.validateStatus}
+                            rules={[{ required: true, type: "email", message: 'The input is not valid E-mail!' }]}
                             help={this.state.email.errorMsg}>
                             <Input 
                                 size="large"
@@ -132,11 +132,10 @@ class Signup extends Component {
                                 type="email" 
                                 autoComplete="off"
                                 placeholder="Your email"
-                                value={this.state.email.value} 
-                                //onBlur={this.validateEmailAvailability}
-                                onChange={(event) => this.handleInputChange(event, this.validateEmail)} />    
+                                value={this.state.email.value} />    
                         </FormItem>
                         <FormItem 
+                            name='password'
                             label="Password"
                             validateStatus={this.state.password.validateStatus}
                             help={this.state.password.errorMsg}>
@@ -150,6 +149,7 @@ class Signup extends Component {
                                 onChange={(event) => this.handleInputChange(event, this.validatePassword)} />    
                         </FormItem>
                         <FormItem 
+                            name='confirmPassword'
                             label="Confirm Password"
                             validateStatus={this.state.confirmedPassword.validateStatus}
                             help={this.state.confirmedPassword.errorMsg}>
@@ -195,59 +195,6 @@ class Signup extends Component {
                 errorMsg: null,
               };            
         }
-    }
-
-    validateEmail = (email) => {
-        if(!email) {
-            return {
-                validateStatus: 'error',
-                errorMsg: 'Email may not be empty'                
-            }
-        }
-
-        const EMAIL_REGEX = RegExp('[^@ ]+@[^@ ]+\\.[^@ ]+');
-        if(!EMAIL_REGEX.test(email)) {
-            return {
-                validateStatus: 'error',
-                errorMsg: 'Email not valid'
-            }
-        }
-
-        if(email.length > EMAIL_MAX_LENGTH) {
-            return {
-                validateStatus: 'error',
-                errorMsg: `Email is too long (Maximum ${EMAIL_MAX_LENGTH} characters allowed)`
-            }
-        }
-
-        return {
-            validateStatus: 'success',
-            errorMsg: null
-        }
-    }
-
-    validateEmailAvailability() {
-        // First check for client side errors in email
-        const emailValue = this.state.email.value;
-        const emailValidation = this.validateEmail(emailValue);
-
-        if(emailValidation.validateStatus === 'error') {
-            this.setState({
-                email: {
-                    value: emailValue,
-                    ...emailValidation
-                }
-            });    
-            return;
-        }
-
-        this.setState({
-            email: {
-                value: emailValue,
-                validateStatus: 'validating',
-                errorMsg: null
-            }
-        });
     }
 
     validatePassword = (password) => {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Routes, Route, useNavigate} from 'react-router-dom';
+import {Routes, Route} from 'react-router-dom';
 
 import { getCurrentUser } from '../util/APIUtils';
 import { ACCESS_TOKEN } from '../constants';
@@ -17,20 +17,11 @@ import { Layout, notification } from 'antd';
 
 import OAuth2RedirectHandler from '../user/oauth2/OAuth2RedirectHandler';
 
+import { withRouterHOC } from '../common/WithRouterHOC'
+
 const { Content } = Layout;
 
-export const withRouter = (Component) => {
-  const Wrapper = (props) => {
-    const navigate = useNavigate();
-
-    return <Component navigate={navigate} {...props} />;
-  };
-
-  return Wrapper;
-};
-
 class App extends Component {
-  // navigate = useNavigate();
 
   constructor(props) {
     super(props);
@@ -82,7 +73,7 @@ class App extends Component {
       isAuthenticated: false
     });
 
-    this.props.history.push(redirectTo);
+    this.props.router.navigate(redirectTo);
     
     notification[notificationType]({
       message: 'CurRunner',
@@ -96,7 +87,7 @@ class App extends Component {
       description: "You're successfully logged in.",
     });
     this.loadCurrentUser();
-    this.props.history.push("/");
+    this.props.router.navigate("/");
   }
 
   render() {
@@ -116,7 +107,7 @@ class App extends Component {
                 <Route path="/login" element={<Login onLogin={this.handleLogin} />} />
                 <Route path="/signup" element={<Signup/>}></Route>
                 <Route path="/users/:email"  
-                  render={(props) => <Profile isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...props}  />}>
+                  element = {<Profile isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...this.props}  />}>
                 </Route>
                 <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler/>} />
                 <Route element={NotFound} />
@@ -128,4 +119,4 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+export default withRouterHOC(App);

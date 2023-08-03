@@ -6,6 +6,7 @@ import LoadingIndicator  from '../../common/LoadingIndicator';
 import './Profile.css';
 import NotFound from '../../common/NotFound';
 import ServerError from '../../common/ServerError';
+import { withRouterHOC } from '../../common/WithRouterHOC'
 
 class Profile extends Component {
     constructor(props) {
@@ -44,13 +45,13 @@ class Profile extends Component {
     }
       
     componentDidMount() {
-        const email = this.props.match.params.email;
+        const email = this.props.router.params.email;
         this.loadUserProfile(email);
     }
 
     componentDidUpdate(nextProps) {
-        if(this.props.match.params.email !== nextProps.match.params.email) {
-            this.loadUserProfile(nextProps.match.params.email);
+        if(this.props.router.params.email !== nextProps.router.params.email) {
+            this.loadUserProfile(nextProps.params.email);
         }        
     }
 
@@ -90,4 +91,4 @@ class Profile extends Component {
     }
 }
 
-export default Profile;
+export default withRouterHOC(Profile);

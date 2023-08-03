@@ -63,35 +63,30 @@ class LoginForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit(event) {
-        event.preventDefault();   
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                const loginRequest = Object.assign({}, values);
-                login(loginRequest)
-                .then(response => {
-                    localStorage.setItem(ACCESS_TOKEN, response.accessToken);
-                    this.props.onLogin();
-                }).catch(error => {
-                    if(error.status === 401) {
-                        notification.error({
-                            message: 'CurRunner',
-                            description: 'Your Username or Password is incorrect. Please try again!'
-                        });                    
-                    } else {
-                        notification.error({
-                            message: 'CurRunner',
-                            description: error.message || 'Sorry! Something went wrong. Please try again!'
-                        });                                            
-                    }
-                });
+    handleSubmit = (values) => {
+        const loginRequest = Object.assign({}, values);
+        login(loginRequest)
+        .then(response => {
+            localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+            this.props.onLogin();
+        }).catch(error => {
+            if(error.status === 401) {
+                notification.error({
+                    message: 'CurRunner',
+                    description: 'Your Username or Password is incorrect. Please try again!'
+                });                    
+            } else {
+                notification.error({
+                    message: 'CurRunner',
+                    description: error.message || 'Sorry! Something went wrong. Please try again!'
+                });                                            
             }
         });
     }
 
     render() {
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form onFinish={this.handleSubmit} className="login-form">
                 <FormItem name='email' rules={[{ required: true, message: 'Please input your email!' }]}>
                     <Input 
                         prefix={<UserOutlined />}
