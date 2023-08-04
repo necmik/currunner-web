@@ -32,6 +32,7 @@ export function login(loginRequest) {
 }
 
 export function signup(signupRequest) {
+    localStorage.removeItem(ACCESS_TOKEN);
     return request({
         url: API_BASE_URL + "register",
         method: 'POST',

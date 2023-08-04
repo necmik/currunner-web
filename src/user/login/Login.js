@@ -78,7 +78,7 @@ class LoginForm extends React.Component {
             } else {
                 notification.error({
                     message: 'CurRunner',
-                    description: error.message || 'Sorry! Something went wrong. Please try again!'
+                    description: 'Error: ' + error.message
                 });                                            
             }
         });
