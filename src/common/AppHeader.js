@@ -33,10 +33,6 @@ class AppHeader extends Component {
               icon: <UserOutlined />,
               children: [                
                   {
-                    label: `${this.props.currentUser.firstName}`,
-                    key: 'user-info',
-                  },
-                  {
                     label: (<Link to={`/users/${this.props.currentUser.email}`}>Profile</Link>),
                     key: 'profile',
                   },

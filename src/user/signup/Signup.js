@@ -68,7 +68,6 @@ class Signup extends Component {
                         <FormItem 
                             name='firstName'
                             label="First Name"
-                            validateStatus={this.state.firstName.validateStatus}
                             rules={[{ required: true, message: 'Please input your name!' },
                                     { min: NAME_MIN_LENGTH, message: `Name is too short (Minimum ${NAME_MIN_LENGTH} characters needed.)` },
                                     { max: NAME_MAX_LENGTH, message: `Name is too long (Maximum ${NAME_MAX_LENGTH} characters needed.)` },
@@ -83,7 +82,6 @@ class Signup extends Component {
                         <FormItem 
                             name='lastName'
                             label="Last Name"
-                            validateStatus={this.state.lastName.validateStatus}
                             rules={[{ required: true, message: 'Please input your surname!' },
                                     { min: NAME_MIN_LENGTH, message: `Surname is too short (Minimum ${NAME_MIN_LENGTH} characters needed.)` },
                                     { max: NAME_MAX_LENGTH, message: `Surname is too long (Maximum ${NAME_MAX_LENGTH} characters needed.)` },
@@ -98,7 +96,6 @@ class Signup extends Component {
                         <FormItem 
                             name='email'
                             label="Email"                        
-                            validateStatus={this.state.email.validateStatus}
                             rules={[{ required: true, type: "email", message: 'The input is not valid E-mail!' }]}
                             help={this.state.email.errorMsg}>
                             <Input 
@@ -111,7 +108,6 @@ class Signup extends Component {
                         <FormItem 
                             name='password'
                             label="Password"
-                            validateStatus={this.state.password.validateStatus}
                             rules={[
                                 { required: true, message: 'Please input your password!' },
                                 { min: PASSWORD_MIN_LENGTH, message: `Password is too short (Minimum ${PASSWORD_MIN_LENGTH} characters needed.)` },
@@ -128,7 +124,6 @@ class Signup extends Component {
                         <FormItem 
                             name='confirmPassword'
                             label="Confirm Password"
-                            validateStatus={this.state.confirmedPassword.validateStatus}
                             rules={[
                                 { required: true, message: 'Please confirm your password!',},
                                 ({ getFieldValue }) => ({
